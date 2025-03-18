@@ -1,0 +1,9 @@
+accelerate==1.2.1
+numpy==2.2.3
+torch==2.5.1
+tqdm==4.66.5
+transformers==4.45.2
+peft==0.14.0
+scikit_learn==1.6.1
+pysam==0.22.1
+pandas==2.2.2

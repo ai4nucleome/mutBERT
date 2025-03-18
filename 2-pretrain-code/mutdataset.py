@@ -38,7 +38,7 @@ class DNADatasetOH(Dataset):
     def __getitem__(self, idx):
         length = self.seq_length + 2
         input_ids = torch.zeros((length, self.vocab_size), dtype=torch.float32)
-        input_ids[0, 1] = 1  # [CLS]: 1
+        input_ids[0, 1] = 1   # [CLS]: 1
         input_ids[-1, 2] = 1  # [SEP]: 2
 
         start_idx = self.start_list[idx]
@@ -51,7 +51,7 @@ class DNADatasetOH(Dataset):
             masked_sample = torch.where(mask, sample, torch.tensor(float('-inf')))
             sample = torch.nn.functional.softmax(masked_sample / self.temperature, dim=-1)
 
-        input_ids[1:-1] = sample  # tokenized, one_hot input_ids
+        input_ids[1:-1] = sample 
 
         attention_mask = torch.ones(length, dtype=torch.int64)
         tokenized_sample = {"input_ids": input_ids,

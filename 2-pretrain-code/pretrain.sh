@@ -1,0 +1,22 @@
+accelerate launch \
+    --main_process_port 29500 \
+    --gpu_ids 4,5,6,7 \
+    run_pretrain.py \
+    --data_dir=/path/to/your/data \
+    --model_name_or_path=model_configs \
+    --train_samples=30000000 \
+    --test_samples=150000 \
+    --mlm_probability=0.15 \
+    --temperature=0.7 \
+    --per_device_train_batch_size=128 \
+    --per_device_eval_batch_size=128 \
+    --learning_rate=4e-4 \
+    --weight_decay=0.01 \
+    --max_train_steps=120000 \
+    --gradient_accumulation_steps=4 \
+    --num_warmup_steps=10000 \
+    --output_dir=output_mutbert \
+    --seed=66 \
+    --max_seq_length=512 \
+    --checkpointing_steps=500 \
+    --exp_name=tb_mutbert

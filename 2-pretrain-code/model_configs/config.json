@@ -1,4 +1,10 @@
-{
+{ "_name_or_path": "JadenLong/MutBERT",
+  "auto_map": {
+      "AutoConfig": "modeling_mutbert.RoPEBertConfig",
+      "AutoModel": "modeling_mutbert.RoPEBertModel",
+      "AutoModelForMaskedLM": "modeling_mutbert.RoPEBertForMaskedLM",
+      "AutoModelForSequenceClassification": "modeling_mutbert.RoPEBertForSequenceClassification"
+  },
   "attention_probs_dropout_prob": 0.1,
   "classifier_dropout": null,
   "hidden_act": "gelu",
