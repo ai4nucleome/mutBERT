@@ -50,9 +50,6 @@ conda activate mutbert
 python3 -m pip install -r requirements.txt
 ```
 
-
-
-
 ## 4. Quick Start
 
 Our model is easy to use with the [transformers](https://github.com/huggingface/transformers) package.
@@ -120,13 +117,14 @@ model = AutoModel.from_pretrained(model_name,
 ### 5.1 Pre-Train Data
 
 The **RAW** training data is available:
-- [mutation data](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV/).
-- [Human Reference Genome](https://hgdownload.soe.ucsc.edu/goldenpath/hg38/bigZips/)
+- [mutation data](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV/): Download `*.vcf.gz`.
+- [Human Reference Genome](https://hgdownload.soe.ucsc.edu/goldenpath/hg38/bigZips/): Download `hg38.fa.gz`
 
 After download raw data, we used [seqkit](https://bioinf.shenwei.me/seqkit/) to process VCF files. [Link to script](./1-prepare_data/vcf2csv.sh)
 
-You can follow 6 steps to [prepare data](./1-prepare_data/preprocess_data.py):
+You can follow 7 steps to [prepare data](./1-prepare_data/preprocess_data.py):
 
+0. csv_post_process(): add header of csv files
 1. fa2npy(): extract sequence data from hg38.fa.gz, save as chr_name.npy
 2. split_by_n(): split sequence data by "N" from chr_name.npy, save as chr_name_part_i.npy
 3. create_sm_matrix(): 3rd STEP: map str to float number, create smooth matrix from chr_name_part_i.npy (str) and clean.chr_name.csv, save as chr_name_part_i.npy (float)
