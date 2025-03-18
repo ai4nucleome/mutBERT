@@ -137,6 +137,16 @@ You can follow 7 steps to [prepare data](./1-prepare_data/preprocess_data.py):
 
 We used and modified `run_mlm_no_trainer.py` at https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_mlm_no_trainer.py by importing the `RoPEBertForMaskedLM` from https://huggingface.co/JadenLong/MutBERT/blob/main/modeling_mutbert.py.
 
+Firstly, open your terminal and run:
+
+```bash
+accelerate config
+```
+
+Follow the guideline you can config accelerate. 
+
+After that, run [pretrain.sh](./2-pretrain-code/pretrain.sh).
+
 ## 6. Finetune
 
 ### 6.1 Evaluate models on TFBS
