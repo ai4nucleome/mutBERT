@@ -33,7 +33,7 @@ class MyCollateFn:
         bs, length = attention_mask.shape
         special_tokens_mask = torch.zeros((bs, length), dtype=torch.int64)
         special_tokens_mask[:, 0] = 1
-        special_tokens_mask[:, -1] = 1  # 只有前后有special token
+        special_tokens_mask[:, -1] = 1
         new_batch = {
             'input_ids': input_ids,  # (B, L, V)
             'attention_mask': attention_mask,  # (B, L)

@@ -5,6 +5,41 @@ import pandas as pd
 import torch
 from tqdm import tqdm
 import torch.nn.functional as F
+import io
+
+def csv_post_process():
+    """
+    0: add header of csv files
+    """
+    
+    chromosomes = [f'chr{i}.csv' for i in range(1, 23)] + ['chrX.csv']
+    root_path = "/path/to/seqkit_trans"
+    for chrom in chromosomes:
+        data_path = os.path.join(root_path, f"trans/trans.{chrom}")
+        save_path = os.path.join(root_path, f"clean/clean.{chrom}")
+        # load csv
+        try:
+            df = pd.read_csv(data_path, header=None)
+        except pd.errors.ParserError as e:
+            print(f"ParserError: {e}")
+            print("Skipping problematic lines...")
+
+            lines = []
+            with open(data_path, 'r') as file:
+                for line in file:
+                    if len(line.strip().split(',')) == 5:
+                        lines.append(line)
+
+            df = pd.read_csv(io.StringIO('\n'.join(lines)), header=None)
+
+        # add Header
+        df.columns = ['CHROM', 'POS', 'REF', 'ALT', 'ALT_P']
+
+        # add 'REF_P'
+        df['REF_P'] = 1 - df['ALT_P']
+
+        # write new file
+        df.to_csv(save_path, index=False)
 
 
 def fa2npy():
@@ -237,7 +272,8 @@ def get_start_indices():
 
 
 if __name__ == "__main__":
-    fa2npy()             # 1
+    csv_post_process()   # 0
+    # fa2npy()             # 1
     # split_by_n()         # 2
     # create_sm_matrix()   # 3
     # cat_all_npy()        # 4

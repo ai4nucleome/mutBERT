@@ -5,7 +5,7 @@ for chr in {1..22} X; do
         input_file="1kGP_high_coverage_Illumina.chr${chr}.filtered.SNV_INDEL_SV_phased_panel.vcf.gz"
     fi
 
-    output_file="seq_npy_data/chr${chr}/clean.chr${chr}.csv"
+    output_file="seq_npy_data/chr${chr}/trans/trans.chr${chr}.csv"
 
     if [ -f "$input_file" ]; then
         echo "Processing $input_file -> $output_file"
