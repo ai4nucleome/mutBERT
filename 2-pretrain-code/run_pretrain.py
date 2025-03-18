@@ -93,10 +93,10 @@ class MyCollateFn:
         inputs[indices_replaced] = mask_token_oh
 
         # 2) 10% random
-        random_indices = torch.bernoulli(torch.full((bs, seq_len), 0.5)).bool() & masked_indices & ~indices_replaced
-        rand_word_ids = torch.randint(len(self.tokenizer), (bs, seq_len), dtype=torch.long)
-        rand_words_oh = F.one_hot(rand_word_ids, num_classes=self.vocab_size).float()
-        inputs[random_indices] = rand_words_oh[random_indices]
+        # random_indices = torch.bernoulli(torch.full((bs, seq_len), 0.5)).bool() & masked_indices & ~indices_replaced
+        # rand_word_ids = torch.randint(len(self.tokenizer), (bs, seq_len), dtype=torch.long)
+        # rand_words_oh = F.one_hot(rand_word_ids, num_classes=self.vocab_size).float()
+        # inputs[random_indices] = rand_words_oh[random_indices]
 
         return inputs, labels, masked_indices
 
