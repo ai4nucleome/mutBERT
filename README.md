@@ -35,7 +35,7 @@ performance.
 
 ## 2. Model and Results
 
-The pre-trained models is available at Huggingface as `JadenLong/MutBERT`. [Link to HuggingFace ModelHub](https://huggingface.co/JadenLong/MutBERT).
+The all 3 pre-trained models are available at Huggingface as `JadenLong/MutBERT`, `JadenLong/MutBERT-Human-Ref` and `JadenLong/MutBERT-Multi`. [Link to HuggingFace ModelHub](https://huggingface.co/JadenLong).
 
 
 ![Performance](figs/results.png)
