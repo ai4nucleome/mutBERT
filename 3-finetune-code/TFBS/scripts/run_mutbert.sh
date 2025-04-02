@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cuda=$2
+cuda=$1
 lr=3e-5
 
 echo "Use mutbert."
