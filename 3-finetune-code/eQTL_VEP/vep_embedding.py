@@ -299,7 +299,7 @@ def dump_embeddings(args, dataset, model, device):
                     for key in ["chromosome", "labels", "distance_to_nearest_tss", "tissue_embed"]:
                         storage_dict[key].append(batch[key].to("cpu", non_blocking=True))
                     with torch.autocast(device_type="cuda", dtype=torch.float16):
-                        if "1mer" in args.model_name_or_path:
+                        if "MutBERT" in args.model_name_or_path:
                             bs_alt_inputs = F.one_hot(batch["alt_input_ids"], num_classes=9).float().to(device)
                             bs_ref_inputs = F.one_hot(batch["ref_input_ids"], num_classes=9).float().to(device)
                         else:

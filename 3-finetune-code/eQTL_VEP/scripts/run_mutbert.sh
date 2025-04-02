@@ -1,4 +1,6 @@
-CUDA_VISIBLE_DEVICES=1 python vep_embedding.py \
+cuda=$1
+
+CUDA_VISIBLE_DEVICES=${cuda} python vep_embedding.py \
   --seq_len 2048 \
   --bp_per_token 1 \
   --model_name_or_path JadenLong/MutBERT \

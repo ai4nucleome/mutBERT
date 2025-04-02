@@ -227,7 +227,7 @@ def train():
 
     # load model
     if data_args.kmer == 1:
-        model = AutoModelForSequenceClassification.from_pretrained.from_pretrained(
+        model = AutoModelForSequenceClassification.from_pretrained(
             model_args.model_name_or_path,
             rope_scaling={'type': 'dynamic','factor': training_args.factor},
             cache_dir=training_args.cache_dir,

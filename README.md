@@ -7,6 +7,8 @@ The repo contains the official implementation of [MutBERT: Probabilistic Genome 
   - [1. Introduction](#1-introduction)
   - [2. Model and Results](#2-model-and-results)
   - [3. Setup environment](#3-setup-environment)
+    - [3.1 All models except DNABERT-2](#31-all-models-except-dnabert-2)
+    - [3.1 Environment for DNABERT-2](#31-environment-for-dnabert-2)
   - [4. Quick Start](#4-quick-start)
     - [4.1 Load Tokenizer and Model](#41-load-tokenizer-and-model)
     - [4.2 Get the embeddings](#42-get-the-embeddings)
@@ -40,6 +42,7 @@ The pre-trained models is available at Huggingface as `JadenLong/MutBERT`. [Link
 
 
 ## 3. Setup environment
+### 3.1 All models except DNABERT-2
 
 ```bash
 # create and activate virtual python environment
@@ -47,7 +50,28 @@ conda create -n mutbert python=3.12
 conda activate mutbert
 
 # install required packages
-python3 -m pip install -r requirements.txt
+pip install -r requirements.txt
+```
+
+### 3.1 Environment for DNABERT-2
+
+DNABERT-2 mainly rely on `transformers==4.29.2`.
+
+```bash
+# create and activate virtual python environment
+conda create -n dnabert2 python=3.8
+conda activate dnabert2
+
+# install required packages
+# transformers==4.29.2 (*)
+# numpy==1.24.4
+# torch==2.4.1
+# accelerate==1.0.1
+# tqdm==4.67.0
+# peft=0.13.2
+# scikit_learn==1.3.2
+# pandas==2.0.3
+pip install package_name
 ```
 
 ## 4. Quick Start
@@ -62,6 +86,7 @@ To load the model from huggingface:
 from transformers import AutoTokenizer, AutoModel
 
 model_name = "JadenLong/MutBERT"
+# Optional: JadenLong/MutBERT-Huamn-Ref, JadenLong/MutBERT-Multi
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
 cls_model = AutoModelForSequenceClassification.from_pretrained(model_name, trust_remote_code=True, num_labels=2)
@@ -80,6 +105,7 @@ import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 
 model_name = "JadenLong/MutBERT"
+# Optional: JadenLong/MutBERT-Huamn-Ref, JadenLong/MutBERT-Multi
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
 
@@ -87,7 +113,7 @@ dna = "ATCGGGGCCCATTA"
 inputs = tokenizer(dna, return_tensors='pt')["input_ids"]
 
 mut_inputs = F.one_hot(inputs, num_classes=len(tokenizer)).float().to("cpu")  # len(tokenizer) is vocab size
-last_hidden_state = model(inputs).last_hidden_state   # [1, sequence_length, 768]
+last_hidden_state = model(mut_inputs).last_hidden_state   # [1, sequence_length, 768]
 # or: last_hidden_state = model(mut_inputs)[0]        # [1, sequence_length, 768]
 
 # embedding with mean pooling
@@ -95,7 +121,7 @@ embedding_mean = torch.mean(last_hidden_state[0], dim=0)
 print(embedding_mean.shape) # expect to be 768
 
 # embedding with max pooling
-embedding_max = torch.max(hidden_states[0], dim=0)[0]
+embedding_max = torch.max(last_hidden_state[0], dim=0)[0]
 print(embedding_max.shape) # expect to be 768
 ```
 ### 4.3 With RoPE scaling
@@ -106,6 +132,8 @@ If you want to scale your model context by 2x:
 
 ```python
 from transformers import AutoModel
+model_name = "JadenLong/MutBERT"
+# Optional: JadenLong/MutBERT-Huamn-Ref, JadenLong/MutBERT-Multi
 model = AutoModel.from_pretrained(model_name,
                                   trust_remote_code=True,
                                   rope_scaling={'type': 'dynamic','factor': 2.0}
@@ -159,6 +187,8 @@ We use GUE (proposed by [DNABERT-2](https://github.com/MAGICS-LAB/DNABERT_2)) to
 
 Please first download the GUE dataset from [here](https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing). Then [run the scripts](./3-finetune-code/TFBS/scripts/) to evaluate on all the tasks. 
 
+P.S: You should use `dnabert2` environment to finetune DNABERT2 on TFBS.
+
 
 ### 6.2 Evaluate models on NT-downstream Tasks
 
@@ -166,11 +196,15 @@ We use [NT-downstream Tasks](https://huggingface.co/datasets/InstaDeepAI/nucleot
 
 [Run the scripts](./3-finetune-code/NT-downstream/scripts/) directly, it will automatically download the datasets and perform finetuning.
 
+P.S: You should use `dnabert2` environment to finetune DNABERT2 on NT-downstream Tasks.
+
 ### 6.2 Evaluate models on eQTL-Vep Tasks
 
 We used and modified `vep_embeddings.py` and `vep_svm.ipynb` at [Caduceus Model](https://github.com/kuleshov-group/caduceus/tree/main).
 
 [Run the scripts](./3-finetune-code/eQTL_VEP/scripts/) directly, it will automatically download the datasets and perform finetuning.
+
+P.S: You should use `dnabert2` environment to finetune DNABERT2 on eQTL-Vep Tasks.
 
 ## 7. Citation
 
